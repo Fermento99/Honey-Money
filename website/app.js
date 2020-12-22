@@ -2,11 +2,16 @@ const express = require("express");
 app = express();
 const port = 3000;
 
-const options = {
+//TODO: implement auth
+function auth(credentils) { 
+    let {login, password} = credentils;
+    if(login == "kubus" && password == "maslo")
+        return true;
+    else
+        return false;
+ } 
 
-}
-
-app.use(express.static("static", options));
+app.use(express.static("static"));
 
 app.get('/', (req, res) => {
     res.redirect('/welcome');
@@ -17,7 +22,12 @@ app.get('/welcome', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.sendFile(__dirname + "/static/login_page.html");
+    if (Object.keys(req.query) == 0)
+        res.sendFile(__dirname + "/static/login_page.html");
+    else if (auth(req.query))
+        res.sendFile(__dirname + "/static/main_page.html");
+    else
+        res.sendFile(__dirname + "/static/login_page_wrong.html");
 })
 
 app.get('/register', (req, res) => {

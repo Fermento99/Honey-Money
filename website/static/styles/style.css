@@ -4,6 +4,10 @@
     position: relative;
 }
 
+.error {
+    color: red;
+}
+
 body {
     background: linear-gradient(90deg, rgb(255, 219, 174) 0%, rgb(255, 240, 218) 50%, rgb(255, 219, 174) 100%);
     display: flex;
@@ -24,7 +28,7 @@ body {
 .navigator {
     border-bottom: groove  #ADA11D;
     border-top: groove #ADA11D;
-    padding: .3em 4em;
+    padding: .3em 14em;
     display: flex;
     flex-direction: row;
     justify-content: center;
