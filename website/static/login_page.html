@@ -21,26 +21,29 @@
     <h4>Please, log in.</h4>
   </div>
   <div class="navigator">
-    <button onclick="location.href='http://localhost:3000/welcome'">Home</button>
+    <button onclick="location.href='http://192.168.89.111:3000/welcome'">Home</button>
   </div>
   <div class="user-form-container" id="login-container">
     <form class="user-form">
+      <h4 id="login-error" class="error"></h4>
       <div class="inner-input">
         <div class="input-box">
           <p>Login:</p>
-          <input type="text" name="login" placeholder="Login">
+          <input id="login" type="text" name="login" placeholder="Login">
         </div>
         <div class="input-box">
           <p>Password:</p>
-          <input type="password" name="password" placeholder="Password">
+          <input id="password" type="password" name="password" placeholder="Password">
         </div>
       </div>
-      <input type="submit" value="Login" formmethod="GET"/>
+      <input id="login-button" type="button" value="Log in" />
     </form>
   </div>
   <div class="password-options">
-    <a href="http://localhost:3000/forgotten_password/">Forgotten password?</a>
+    <a href="http://192.168.89.111:3000/forgotten_password/">Forgotten password?</a>
   </div>
+
+  <script src="./login.js"></script>
 </body>
 
 </html>

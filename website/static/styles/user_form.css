@@ -33,7 +33,7 @@
     margin: .6em 2em;
 }
 
-.user-form input[type=submit] {
+#login-button {
     margin: 1em;
     border-style: outset;
     border-radius: 8px;
@@ -44,11 +44,11 @@
     transition: background-color .15s ease-out, color .1s ease-out;
 }
 
-.user-form input[type=submit]:hover {
+#login-button:hover {
     background-color: #95E538;
 }
 
-.user-form input[type=submit]:active {
+#login-button:active {
     color: black;
 }
 
