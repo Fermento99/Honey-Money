@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require("express");
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+const dbmanager = require('./dbmanager');
 
 app = express();
 const port = 3000;
@@ -23,8 +24,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/welcome', (req, res) => {
-    let auth = req.headers.authentication;
-    if(auth) console.log(auth);
     res.sendFile(__dirname + "/static/index.html");
 })
 
@@ -38,6 +37,14 @@ app.get('/register', (req, res) => {
 
 app.get('/main', (req, res) => {
     res.sendFile(__dirname + "/static/main_page.html");
+})
+
+app.post('/register', (req, res) => {
+    dbmanager.register(req.body, res);
+})
+
+app.get('/register_successful', (req,res) => {
+    res.sendFile(__dirname + "/static/register_successful.html")
 })
 
 

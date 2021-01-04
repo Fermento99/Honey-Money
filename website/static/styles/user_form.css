@@ -33,7 +33,7 @@
     margin: .6em 2em;
 }
 
-#login-button {
+.form-button {
     margin: 1em;
     border-style: outset;
     border-radius: 8px;
@@ -44,11 +44,11 @@
     transition: background-color .15s ease-out, color .1s ease-out;
 }
 
-#login-button:hover {
+.form-button:hover {
     background-color: #95E538;
 }
 
-#login-button:active {
+.form-button:active {
     color: black;
 }
 

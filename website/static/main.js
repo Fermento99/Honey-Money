@@ -1,7 +1,7 @@
 
 let accessToken;
 
-fetch("http://192.168.89.111:3000/auth/refresh", {
+fetch("http://localhost:3000/auth/refresh", {
   method: "POST",
   credentials: "same-origin",
   headers: {

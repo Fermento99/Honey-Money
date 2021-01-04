@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="./imgs/favicon.svg" type="image/x-icon">
   <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="./styles/user_form.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Langar&family=Varela+Round&display=swap" rel="stylesheet"> 
   <title>Honey Money: Registration</title>
@@ -20,8 +21,30 @@
     <h4>Register new account.</h4>
   </div>
   <div class="navigator">
-    <button onclick="location.href='http://192.168.89.111:3000/welcome'">Home</button>
+    <button onclick="location.href='http://localhost:3000/welcome'">Home</button>
   </div>
+  <div class="user-form-container" id="register-container">
+    <form class="user-form">
+      <h4 id="register-error" class="error"></h4>
+      <div class="inner-input">
+        <div class="input-box">
+          <p>Login:</p>
+          <input id="login" type="text" name="login" placeholder="Login">
+        </div>
+        <div class="input-box">
+          <p>Password:</p>
+          <input id="password" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="input-box">
+          <p>Confirm Password:</p>
+          <input id="passwordconf" type="password" name="passwordconf" placeholder="Confirm Password">
+        </div>
+      </div>
+      <input id="register-button" class="form-button" type="button" value="Register" />
+    </form>
+  </div>
+
+  <script src="./register.js"></script>
 </body>
 
 </html>
