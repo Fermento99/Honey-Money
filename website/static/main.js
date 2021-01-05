@@ -14,3 +14,13 @@ fetch("http://localhost:3000/auth/refresh", {
     return data.username;
   })
   .then(username => document.getElementById('username').innerText = username)
+
+document.getElementById('logout-button').addEventListener("click", () => {
+  fetch("http://localhost:3000/auth/logout", {
+    method: "DELETE",
+  }).then(res => {
+    if(res.status == 200) {
+      location.href='http://localhost:3000/welcome';
+    }
+  })
+})

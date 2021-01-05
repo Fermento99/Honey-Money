@@ -19,7 +19,7 @@ function validateUser(login) {
 }
 
 
-function register(user, response) {
+function register(user, next) {
   const { login, password } = user;
   // validate
 
@@ -29,21 +29,21 @@ function register(user, response) {
   connection.query('INSERT INTO users (username, pass) values (?, ?);', [login, hash], (err, res) => {
     if (err) {
       console.log(err);
-      response.sendStatus(400);
+      next(false);
     } else {
       console.log('ok');
-      response.sendStatus(200);
+      next(true);
     }
-  })
+  });
   connection.end();
-};
+}
 
 function login(user, next) {
   const { login, password } = user;
   if(!validateUser(login)) return next(false);
 
   let connection = connect();
-  connection.query('SELECT pass FROM users WHERE username = ?', login, (err, res) => {
+  connection.query('SELECT id, pass FROM users WHERE username = ?', login, (err, res) => {
     if(err) {
       console.log(err);
       next(false);
@@ -51,16 +51,36 @@ function login(user, next) {
     else {
       if(res[0])
         if(bcrypt.compareSync(password, res[0].pass))
-          next(true);
+          next(res[0].id);
         else
           next(false);
       else
         next(false);
     }
-    connection.end();
-  })
-  
+  });
+  connection.end();
+}
+
+function reset_pass(user, next) {
+  const { login, password } = user;
+  if(!validateUser(login)) return next(false);
+
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+
+  let connection = connect();
+  connection.query('UPDATE users SET pass = ? WHERE username = ?', [hash, login], (err, res) => {
+    if(err) {
+      console.log(err);
+      next(false);
+    } else {
+      console.log(res);
+      next(true);
+    }
+  });
+  connection.end();
 }
 
 module.exports.register = register;
 module.exports.login = login;
+module.exports.reset = reset_pass
