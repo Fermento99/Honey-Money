@@ -1,1 +1,6 @@
-Repository for imaginary bank website, yet safe.
+Repository for safe imaginary bank website.
+/*TODO:
+- fix routing
+- style (at least table)
+- validate transfer input
+*/

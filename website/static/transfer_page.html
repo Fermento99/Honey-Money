@@ -1,11 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HoneyMoney</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="./imgs/favicon.svg" type="image/x-icon">
+  <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="./styles/transfer_form.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Langar&family=Varela+Round&display=swap" rel="stylesheet"> 
+  <title>HoneyMoney: New Transfer</title>
 </head>
+
 <body>
-    
+  <div id="header">
+    <div id="logo">
+      <img src="./imgs/logo.svg" />
+    </div>
+    <h2 id="welcome-message">Creating new transfer</h2>
+  </div>
+  <div class="transfer-form-container" id="transfer-container">
+    <form class="transfer-form">
+      <h4 id="transfer-error" class="error"></h4>
+      <div class="inner-input">
+        <div class="input-box">
+          <p class="label">Sender: </p> <b id="username"></b>
+        </div>
+        <div class="input-box">
+          <p class="label">Reciver:</p>
+          <input id="reciver" type="text" name="reciver" placeholder="Reciver" />
+        </div>
+        <div class="input-box">
+          <p class="label">Title:</p>
+          <input id="title" type="text" name="title" placeholder="Title" />
+        </div>
+        <div class="input-box">
+          <p class="label">Value:</p>
+          <input id="value" type="text" name="value" placeholder="Value" />
+          <span class="coin">
+            <img src="./imgs/bee-coin.svg" />
+            <p>Bee-coins</p>
+          </span>
+        </div>
+      </div>
+      <input id="transfer-button" class="form-button" type="button" value="Send">
+    </form>
+  </div>
+  <script src="./transfer.js"></script>
 </body>
+
 </html>
