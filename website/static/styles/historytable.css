@@ -1,0 +1,14 @@
+
+.table-container {
+    font-family: 'Varela Round', sans-serif;
+    margin: 2em;
+    background-color: #eee;
+    padding: 1em;
+}
+
+
+#history-table th {
+    border: 2px solid #333;
+    margin: 0;
+    width: 10em;
+}

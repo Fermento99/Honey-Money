@@ -89,16 +89,39 @@ app.get('/transfer', (req, res) => {
   res.sendFile(__dirname + "/static/transfer/transfer_page.html");
 })
 
+app.get('/transfer/confirm', (req, res) => {
+  res.sendFile(__dirname + "/static/transfer/confirmation_page.html");
+})
+
+app.get('/transfer/accepted', (req, res) => {
+  res.sendFile(__dirname + "/static/transfer/accepted_transfer.html");
+})
+
+app.get('/transfer/denied', (req, res) => {
+  res.sendFile(__dirname + "/static/transfer/denied_transfer.html");
+})
+
 app.get('/history', (req, res) => {
   res.sendFile(__dirname + "/static/history/history_page.html");
 })
 
 app.get('/history/data', (req, res) => {
   const token = req.headers.authorization;
-  console.log(req.headers);
   checkToken(token.split(' ')[1], user => {
     if (user) {
       dbmanager.history(user.id, data => {
+        if (data) res.json(data);
+        else res.sendStatus(400);
+      })
+    } else res.sendStatus(401);
+  });
+})
+
+app.get('/balance', (req, res) => {
+  const token = req.headers.authorization;
+  checkToken(token.split(' ')[1], user => {
+    if (user) {
+      dbmanager.balance(user.id, data => {
         if (data) res.json(data);
         else res.sendStatus(400);
       })
@@ -113,12 +136,12 @@ app.post('/transfer', (req, res) => {
   if (!token) return res.sendStatus(401);
   checkToken(token.split(' ')[1], user => {
     if (user) {
-      if (sender.id != user.id || sender.name != user.username) return res.sendStatus(401);
+      if (sender.id != user.id || sender.username != user.user) return res.sendStatus(401);
       dbmanager.transfer(sender, reciver, title, value, success => {
-        if (success) res.sendStatus(200);
-        else res.sendStatus(400);
+        if (success) return res.json({ sender: sender.username, reciver: reciver, title: title, value: value });
+        else return res.sendStatus(400);
       })
-    } else res.sendStatus(401);
+    } else return res.sendStatus(401);
   });
 })
 

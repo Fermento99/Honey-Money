@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../imgs/favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/coin.css">
+    <link rel="stylesheet" href="../styles/balance.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Langar&family=Varela+Round&display=swap" rel="stylesheet"> 
     <title>HoneyMoney: Main</title>
@@ -20,6 +22,13 @@
         <button onclick="location.href='http://localhost:3000/transfer'">Make Transfer</button>
         <button onclick="location.href='http://localhost:3000/history'">Transfer History</button>
         <button id="logout-button">Logout</button>
+      </div>
+      <div id="balance">
+        <p>Your actual account balance:  <b id="account-balance-value"></b></p>
+        <span class="coin">
+          <img src="../imgs/bee-coin.svg" />
+          <p>Bee-coins</p>
+        </span>
       </div>
       <script src="main.js"></script>
 </body>

@@ -1,10 +1,25 @@
 
 let accessToken;
 let user;
+let error = document.getElementById('transfer-error')
 
-function validateReciver(r) { return true; }
-function validateTitle(t) { return true; }
-function validateValue(v) { return true; }
+function validateReciver(login) {
+  if (login.length >= 3 && login.length <= 25 && !/\s/.test(login)) return true;
+  error.innerText = "Invalid reciver";
+  return false;
+}
+
+function validateTitle(title) { 
+  if(title.length <= 50 && title.length >= 1) return true;
+  error.innerText = "Invalid title";
+  return false;
+}
+
+function validateValue(value) {
+  if(parseInt(value) > 0 && /^\d+$/.test(value)) return true;
+  error.innerText = "Invalid value";
+  return false;
+}
 
 
 fetch("http://localhost:3000/auth/refresh", {
@@ -30,15 +45,7 @@ document.getElementById("transfer-button").addEventListener('click', () => {
   if (!validateReciver(reciverv) || !validateTitle(titlev) || !validateValue(valuev)) return;
 
   const data = { sender: user, reciver: reciverv, title: titlev, value: valuev };
-  console.log(accessToken);
+  window.sessionStorage.setItem("transferData", JSON.stringify(data));
 
-  fetch("http://localhost:3000/transfer", {
-    method: "POST",
-    credentials: "same-origin",
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data)
-  })
+  location.href = "http://localhost:3000/transfer/confirm";
 })

@@ -1,0 +1,6 @@
+#balance {
+    margin: 2em;
+    display: flex;
+    flex-direction: row;
+    font-family: 'Varela Round', sans-serif;
+}

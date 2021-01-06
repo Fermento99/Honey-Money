@@ -15,12 +15,16 @@ const connect = () => {
 }
 
 function validateUser(login) {
-  if(login.length < 3 || login.length > 25 || /\s/.test(login)) return true;
-  return true;
+  return  login.length >= 3 && login.length <= 25 && !/\s/.test(login);
 }
 
-function validateTitle(title) { return true; }
-function validateValue(value) { return true; }
+function validateTitle(title) { 
+  return title.length <= 50 && title.length >= 1; 
+}
+
+function validateValue(value) {
+  return parseInt(value) > 0 && /^\d+$/.test(value);
+}
 
 
 function register(user, next) {
@@ -31,29 +35,29 @@ function register(user, next) {
   const hash = bcrypt.hashSync(password, salt);
   let connection = connect();
   connection.beginTransaction(err => {
-    if(err) connection.rollback(() => {
+    if(err) return connection.rollback(() => {
       console.log(err);
       next(false);
     });
     connection.query('INSERT INTO users (username, pass) VALUES (?, ?);', [login, hash], (err, res) => {
-      if(err) connection.rollback(() => {
+      if(err) return connection.rollback(() => {
         console.log(err);
         next(false);
       });
       console.log(res);
       const id = res.insertId;
       
-      if(!id) connection.rollback(() => {
+      if(!id) return connection.rollback(() => {
         console.log(err);
         next(false);
       });
       connection.query('INSERT INTO balances VALUES (?, 100);', [id], (err, res) => {
-        if(err) connection.rollback(() => {
+        if(err) return connection.rollback(() => {
           console.log(err);
           next(false);
         });
         connection.commit(err => {
-          if(err) connection.rollback(() => {
+          if(err) return connection.rollback(() => {
             console.log(err);
             next(false);
           });
@@ -109,31 +113,37 @@ function reset_pass(user, next) {
 
 function transfer(sender, reciver, title, value, next) {
   if(!validateUser(sender.username) || !validateUser(reciver) || !validateTitle(title) || !validateValue(value)) return next(false);
-
+  if(sender.username == reciver) return next(false);
 
   let connection = connect();
   connection.beginTransaction(err => {
-    if(err) connection.rollback(() => {
+    if(err) return connection.rollback(() => {
       console.log(err);
       next(false);
     });
     connection.query('SELECT id FROM users WHERE username = ?;', reciver, (err, res) => {
-      if(err) connection.rollback(() => {
+      if(err) return connection.rollback(() => {
         console.log(err);
         next(false);
       });
-      let reciverid = res[0].id;
-      if(!reciverid) connection.rollback(err => {
+      let reciverid = 0;
+      if(res.length != 1) return connection.rollback(() => {
+        console.log(err);
+        next(false);
+      });
+      else reciverid = res[0].id;
+
+      if(reciverid == 0) return connection.rollback(() => {
         console.log(err);
         next(false);
       });
 
       connection.query('SELECT value FROM balances WHERE owner = ?;', sender.id, (err, res) => {
-        if(err) connection.rollback(() => {
+        if(err) return connection.rollback(() => {
           console.log(err);
           next(false);
         });
-        if(res[0].value < value) connection.rollback(() => {
+        if(res[0].value < value) return connection.rollback(() => {
           console.log(err);
           next(false);
         });
@@ -142,12 +152,12 @@ function transfer(sender, reciver, title, value, next) {
         query += 'UPDATE balances SET value = value - ? where owner = ?;';
 
         connection.query(query, [sender.id, reciverid, title, value, /* */ value, reciverid,  /* */ value, sender.id], (err, res) => {
-          if(err) connection.rollback(() => {
+          if(err) return connection.rollback(() => {
             console.log(err);
             next(false);
           });
           connection.commit(err => {
-            if(err) connection.rollback(() => {
+            if(err) return connection.rollback(() => {
               console.log(err);
               next(false);
             });
@@ -171,8 +181,21 @@ function history(user, next) {
   connection.end();
 }
 
+function balance(user, next) {
+  let connection = connect();
+  connection.query('SELECT value FROM balances WHERE owner = ?', user, (err, res) => {
+    if(err) {
+      console.log(err);
+      return next(false);
+    }
+    next(res[0].value);
+  });
+  connection.end();
+}
+
 module.exports.register = register;
 module.exports.login = login;
 module.exports.reset = reset_pass;
 module.exports.transfer = transfer;
 module.exports.history = history;
+module.exports.balance = balance;

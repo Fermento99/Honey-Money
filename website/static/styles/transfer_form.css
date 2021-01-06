@@ -56,22 +56,6 @@ a {
     text-emphasis: none;
 }
 
-.coin {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-left: .7em;
-}
-
-.coin img {
-    height: 1.5em;
-}
-
-.coin p {
-    margin: .5em;
-}
-
 #value {
     width: 4em;
 }
