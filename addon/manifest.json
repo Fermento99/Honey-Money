@@ -5,8 +5,12 @@
 
     "content_scripts": [
         {
-            "matches": ["*://localhost/transfer*"],
-            "js": ["addon.js"]
+            "matches": ["*://localhost/transfer/confirm"],
+            "js": ["sender.js"]
+        },
+        {
+            "matches": ["*://localhost/transfer/accepted"],
+            "js": ["reciver.js"]
         }
     ]
 }
