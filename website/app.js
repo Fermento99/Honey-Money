@@ -15,11 +15,11 @@ app.use(express.json())
 let refreshTokens = [];
 
 let generateAccessToken = user => {
-  return jwt.sign({ id: user.id, user: user.name, isDate: Date.now() }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+  return jwt.sign({ id: user.id, user: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
 }
 
 let generateRefreshToken = user => {
-  return jwt.sign({ id: user.id, user: user.name, isDate: Date.now() }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '15m' });
+  return jwt.sign({ id: user.id, user: user.name }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '15m' });
 }
 
 let checkToken = (token, next) => {
@@ -42,11 +42,11 @@ app.get('/welcome', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  res.sendFile(__dirname + "/static/login_page.html");
+  res.sendFile(__dirname + "/static/login/login_page.html");
 })
 
 app.get('/register', (req, res) => {
-  res.sendFile(__dirname + "/static/register_page.html");
+  res.sendFile(__dirname + "/static/register/register_page.html");
 })
 
 app.post('/register', (req, res) => {
@@ -57,11 +57,11 @@ app.post('/register', (req, res) => {
 })
 
 app.get('/register_successful', (req, res) => {
-  res.sendFile(__dirname + "/static/register_successful.html");
+  res.sendFile(__dirname + "/static/register/register_successful.html");
 })
 
 app.get('/forgotten_password', (req, res) => {
-  res.sendFile(__dirname + "/static/forgotten_password.html");
+  res.sendFile(__dirname + "/static/forgotten/forgotten_password.html");
 })
 
 app.post('/forgotten_password', (req, res) => {
@@ -72,21 +72,25 @@ app.post('/forgotten_password', (req, res) => {
 })
 
 app.get('/pass_successful', (req, res) => {
-  res.sendFile(__dirname + "/static/pass_succesful.html");
+  res.sendFile(__dirname + "/static/forgotten/pass_succesful.html");
 })
 
 
 // main pages
 app.get('/main', (req, res) => {
-  res.sendFile(__dirname + "/static/main_page.html");
+  res.sendFile(__dirname + "/static/main/main_page.html");
+})
+
+app.get('/logout', (req, res) => {
+  res.sendFile(__dirname + "/static/main/log_out.html")
 })
 
 app.get('/transfer', (req, res) => {
-  res.sendFile(__dirname + "/static/transfer_page.html");
+  res.sendFile(__dirname + "/static/transfer/transfer_page.html");
 })
 
 app.get('/history', (req, res) => {
-  res.sendFile(__dirname + "/static/history_page.html");
+  res.sendFile(__dirname + "/static/history/history_page.html");
 })
 
 app.get('/history/data', (req, res) => {
@@ -152,9 +156,11 @@ app.post('/auth/refresh', (req, res) => {
     jwt.verify(t, process.env.REFRESH_TOKEN_SECRET, (err, token) => {
       if (err) res.sendStatus(403);
       else {
-        console.log(t)
-        accessToken = generateAccessToken({ id: token.id, user: token.user });
-        res.cookie("refresh_token", t, { httpOnly: true, maxAge: 900000, sameSite: true });
+        refreshTokens.splice(refreshTokens.indexOf(t));
+        accessToken = generateAccessToken({ id: token.id, name: token.user });
+        refreshToken = generateRefreshToken({ id: token.id, name: token.user });
+        refreshTokens.push(refreshToken);
+        res.cookie("refresh_token", refreshToken, { httpOnly: true, maxAge: 900000, sameSite: true });
         res.json({ id: token.id, username: token.user, token: accessToken });
       }
     })

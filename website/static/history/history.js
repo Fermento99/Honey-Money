@@ -26,10 +26,11 @@ fetch("http://localhost:3000/auth/refresh", {
     .then(data => {
       let table = document.getElementById('history-table');
       data.forEach(element => {
-        table.innerHTML += `<tr><th>${element.title}</th><th>${element.sender}</th><th>${element.reciver}</th><th>${element.value} <span class="coin"><img src="./imgs/bee-coin.svg" /><p>Bee-coins</p></span></th></tr>`
+        table.innerHTML += `<tr><th>${element.title}</th><th>${element.sender}</th><th>${element.reciver}</th><th>${element.value} <span class="coin"><img src="../imgs/bee-coin.svg" /><p>Bee-coins</p></span></th></tr>`
       });
     })
   })
+  .catch(err => location.href="http://localhost:3000/logout")
 
 document.getElementById('logout-button').addEventListener("click", () => {
   fetch("http://localhost:3000/auth/logout", {

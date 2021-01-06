@@ -21,6 +21,7 @@ fetch("http://localhost:3000/auth/refresh", {
     return data.username;
   })
   .then(username => document.getElementById('username').innerText = username)
+  .catch(err => location.href="http://localhost:3000/logout")
 
 document.getElementById("transfer-button").addEventListener('click', () => {
   const reciverv = reciver.value;
