@@ -199,4 +199,4 @@ const privkey  = fs.readFileSync('../certificates/honeykey.pem', 'utf8');
 const privcert  = fs.readFileSync('../certificates/honeycert.crt', 'utf8');
 const credentials = {key: privkey, cert: privcert};
 
-https.createServer(credentials, app).listen(port, () => console.log("listening on port " + port));
+app.listen(port, () => console.log("listening on port " + port));
